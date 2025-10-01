@@ -78,7 +78,7 @@ export default function Index() {
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-2">
               <Icon name="Package" size={32} className="text-primary" />
-              <span className="text-xl font-bold">MineCraft Store</span>
+              <span className="text-xl font-bold">Nine Store</span>
             </div>
             
             <div className="hidden md:flex items-center gap-6">
@@ -404,7 +404,7 @@ export default function Index() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <Icon name="Package" size={24} className="text-primary" />
-              <span className="font-semibold">MineCraft Store</span>
+              <span className="font-semibold">Nine Store</span>
             </div>
             <p className="text-sm text-muted-foreground">© 2024 Все права защищены</p>
             <div className="flex items-center gap-4">
