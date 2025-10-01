@@ -4,6 +4,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { useToast } from '@/hooks/use-toast';
 
 interface Modpack {
   id: number;
@@ -70,6 +75,40 @@ const faqItems = [
 
 export default function Index() {
   const [activeSection, setActiveSection] = useState('home');
+  const [selectedModpack, setSelectedModpack] = useState<Modpack | null>(null);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('card');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '' });
+  const { toast } = useToast();
+
+  const handleBuyClick = (modpack: Modpack) => {
+    setSelectedModpack(modpack);
+    setIsPaymentOpen(true);
+  };
+
+  const handlePayment = async () => {
+    if (!formData.name || !formData.email) {
+      toast({
+        title: 'Ошибка',
+        description: 'Заполните все поля',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+    
+    setTimeout(() => {
+      setIsProcessing(false);
+      setIsPaymentOpen(false);
+      toast({
+        title: 'Оплата успешна!',
+        description: `Сборка "${selectedModpack?.title}" куплена. Ссылка на скачивание отправлена на ${formData.email}`
+      });
+      setFormData({ name: '', email: '' });
+    }, 2000);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -154,7 +193,7 @@ export default function Index() {
                     </CardContent>
                     <CardFooter className="flex items-center justify-between">
                       <span className="text-2xl font-bold text-primary">{pack.price} ₽</span>
-                      <Button className="gap-2">
+                      <Button className="gap-2" onClick={() => handleBuyClick(pack)}>
                         <Icon name="ShoppingCart" size={16} />
                         Купить
                       </Button>
@@ -414,6 +453,97 @@ export default function Index() {
           </div>
         </div>
       </footer>
+
+      <Dialog open={isPaymentOpen} onOpenChange={setIsPaymentOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Оформление покупки</DialogTitle>
+            <DialogDescription>
+              {selectedModpack && `${selectedModpack.title} - ${selectedModpack.price} ₽`}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Имя</Label>
+              <Input
+                id="name"
+                placeholder="Введите ваше имя"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="your@email.com"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-3">
+              <Label>Способ оплаты</Label>
+              <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
+                <div className="flex items-center space-x-2 border rounded-lg p-3 cursor-pointer hover:bg-muted/50 transition-colors">
+                  <RadioGroupItem value="card" id="card" />
+                  <Label htmlFor="card" className="flex items-center gap-2 cursor-pointer flex-1">
+                    <Icon name="CreditCard" size={20} className="text-primary" />
+                    <div>
+                      <div className="font-medium">Банковская карта</div>
+                      <div className="text-xs text-muted-foreground">Visa, MasterCard, МИР</div>
+                    </div>
+                  </Label>
+                </div>
+
+                <div className="flex items-center space-x-2 border rounded-lg p-3 cursor-pointer hover:bg-muted/50 transition-colors">
+                  <RadioGroupItem value="sbp" id="sbp" />
+                  <Label htmlFor="sbp" className="flex items-center gap-2 cursor-pointer flex-1">
+                    <Icon name="Smartphone" size={20} className="text-primary" />
+                    <div>
+                      <div className="font-medium">СБП</div>
+                      <div className="text-xs text-muted-foreground">Оплата через Систему быстрых платежей</div>
+                    </div>
+                  </Label>
+                </div>
+
+                <div className="flex items-center space-x-2 border rounded-lg p-3 cursor-pointer hover:bg-muted/50 transition-colors">
+                  <RadioGroupItem value="qiwi" id="qiwi" />
+                  <Label htmlFor="qiwi" className="flex items-center gap-2 cursor-pointer flex-1">
+                    <Icon name="Wallet" size={20} className="text-primary" />
+                    <div>
+                      <div className="font-medium">Электронный кошелёк</div>
+                      <div className="text-xs text-muted-foreground">QIWI, ЮMoney</div>
+                    </div>
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsPaymentOpen(false)} disabled={isProcessing}>
+              Отмена
+            </Button>
+            <Button onClick={handlePayment} disabled={isProcessing} className="gap-2">
+              {isProcessing ? (
+                <>
+                  <Icon name="Loader2" size={16} className="animate-spin" />
+                  Обработка...
+                </>
+              ) : (
+                <>
+                  <Icon name="CreditCard" size={16} />
+                  Оплатить {selectedModpack?.price} ₽
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
