@@ -285,21 +285,68 @@ export default function Index() {
         <section className="py-16">
           <div className="container mx-auto px-4 max-w-4xl">
             <h1 className="text-4xl font-bold text-center mb-8">О нас</h1>
-            <Card>
-              <CardContent className="pt-6 space-y-4">
-                <p className="text-lg">
-                  Мы — команда энтузиастов Minecraft, которые создают качественные сборки модов для игроков по всему миру.
-                </p>
-                <p>
-                  С 2020 года мы разработали более 50 уникальных модпаков, которые скачали более 100 000 игроков. 
-                  Наша цель — сделать Minecraft ещё интереснее и разнообразнее.
-                </p>
-                <p>
-                  Каждая сборка тщательно тестируется, оптимизируется и поставляется с автоматической системой установки 
-                  и обновлений. Мы гарантируем стабильную работу всех модов и их совместимость.
-                </p>
-              </CardContent>
-            </Card>
+            <div className="space-y-6">
+              <Card>
+                <CardContent className="pt-6 space-y-4">
+                  <p className="text-lg">
+                    Мы — команда энтузиастов Minecraft, которые создают качественные сборки модов для игроков по всему миру.
+                  </p>
+                  <p>
+                    С 2020 года мы разработали более 50 уникальных модпаков, которые скачали более 100 000 игроков. 
+                    Наша цель — сделать Minecraft ещё интереснее и разнообразнее.
+                  </p>
+                  <p>
+                    Каждая сборка тщательно тестируется, оптимизируется и поставляется с автоматической системой установки 
+                    и обновлений. Мы гарантируем стабильную работу всех модов и их совместимость.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Icon name="Building2" size={24} className="text-primary" />
+                    Реквизиты организации
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Название организации</p>
+                      <p className="font-medium">ИП Иванов Иван Иванович</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">ИНН</p>
+                      <p className="font-medium">123456789012</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">ОГРНИП</p>
+                      <p className="font-medium">321123400012345</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Расчётный счёт</p>
+                      <p className="font-medium">40802810123456789012</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Банк</p>
+                      <p className="font-medium">ПАО Сбербанк</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">БИК</p>
+                      <p className="font-medium">044525225</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Корр. счёт</p>
+                      <p className="font-medium">30101810400000000225</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Юридический адрес</p>
+                      <p className="font-medium">г. Москва, ул. Примерная, д. 1</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </section>
       )}
